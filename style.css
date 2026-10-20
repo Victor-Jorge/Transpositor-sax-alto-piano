@@ -1,0 +1,140 @@
+/* ===== Variáveis: mude cores e tamanhos aqui ===== */
+:root {
+  --fundo: #0e1116;
+  --superficie: #161b22;
+  --superficie-2: #1e252e;
+  --linha: #2a323d;
+  --texto: #e8ecf1;
+  --texto-suave: #8f9aa9;
+
+  /* Cada instrumento tem sua cor, em todo o app */
+  --sax: #f2b544;
+  --sax-fundo: rgba(242, 181, 68, .14);
+  --piano: #6ea8ff;
+  --piano-fundo: rgba(110, 168, 255, .14);
+
+  --acerto: #3dd68c;
+  --acerto-fundo: rgba(61, 214, 140, .14);
+  --erro: #ff6b6b;
+  --erro-fundo: rgba(255, 107, 107, .14);
+
+  --raio: 16px;
+  --toque: 58px;           /* altura mínima dos botões de resposta */
+  --altura-piano: 140px;
+  --larg-preta: 9;         /* largura da tecla preta, em % do teclado (só o número) */
+  --altura-nav: 64px;
+
+  --fonte: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+[hidden] { display: none !important; }
+
+body { margin: 0; background: var(--fundo); color: var(--texto); font: 1rem/1.45 var(--fonte); }
+
+.app { max-width: 520px; margin: 0 auto; padding: 16px 16px calc(var(--altura-nav) + 32px + env(safe-area-inset-bottom)); }
+
+button { font-family: inherit; color: inherit; cursor: pointer; }
+button:active:not(:disabled) { transform: scale(.98); }
+:focus-visible { outline: 3px solid var(--piano); outline-offset: 2px; }
+
+.topo { margin-bottom: 16px; }
+h1 { margin: 0; font-size: 1.15rem; font-weight: 700; letter-spacing: -.01em; }
+.seta { color: var(--texto-suave); }
+h2 { margin: 4px 0 8px; font-size: 1.5rem; letter-spacing: -.02em; }
+h3 { margin: 24px 0 10px; font-size: .95rem; color: var(--texto-suave); font-weight: 600; }
+.explica { color: var(--texto-suave); margin: 0 0 14px; }
+
+.aviso { background: var(--erro-fundo); border: 1px solid var(--erro); border-radius: var(--raio); padding: 12px 14px; margin: 0 0 12px; font-size: .9rem; }
+
+/* ===== Barra de navegação inferior (polegar) ===== */
+.abas {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+  display: flex; justify-content: center; gap: 4px;
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  background: rgba(22, 27, 34, .94); border-top: 1px solid var(--linha);
+  backdrop-filter: blur(10px);
+}
+.abas button {
+  flex: 1; max-width: 120px; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  background: none; border: 0; border-radius: 12px; font-size: .75rem; font-weight: 600; color: var(--texto-suave);
+}
+.abas svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.abas button[aria-current="page"] { color: var(--texto); background: var(--superficie-2); }
+
+/* ===== Quiz ===== */
+.barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.pilula { min-height: 40px; padding: 0 14px; background: var(--superficie); border: 1px solid var(--linha); border-radius: 999px; font-size: .9rem; font-weight: 600; }
+.placar { display: flex; gap: 14px; margin: 0; font-size: .85rem; color: var(--texto-suave); }
+.placar strong { font-size: 1.1rem; }
+.placar__item--ok strong { color: var(--acerto); }
+.placar__item--erro strong { color: var(--erro); }
+
+.pergunta { background: var(--superficie); border: 1px solid var(--linha); border-radius: var(--raio); padding: 22px 18px; margin-bottom: 14px; text-align: center; }
+.chip { display: inline-block; padding: 5px 12px; border-radius: 999px; font-weight: 600; font-size: .85rem; }
+.chip--sax { background: var(--sax-fundo); color: var(--sax); }
+.chip--piano { background: var(--piano-fundo); color: var(--piano); }
+.pergunta__nota { margin: 14px 0 6px; font-size: 3.6rem; font-weight: 800; line-height: 1.05; letter-spacing: -.03em; }
+.pergunta__nota--sax { color: var(--sax); }
+.pergunta__nota--piano { color: var(--piano); }
+.pergunta__texto { margin: 0; color: var(--texto-suave); }
+
+.respostas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.resposta {
+  min-height: var(--toque); padding: 6px 4px;
+  background: var(--superficie-2); border: 1.5px solid var(--linha); border-radius: 14px;
+  font-size: 1.05rem; font-weight: 700;
+}
+.resposta:disabled { cursor: default; }
+.resposta--certa { background: var(--acerto-fundo); border-color: var(--acerto); color: var(--acerto); }
+.resposta--certa::after { content: " ✓"; }
+.resposta--errada { background: var(--erro-fundo); border-color: var(--erro); color: var(--erro); }
+.resposta--errada::after { content: " ✗"; }
+
+.feedback { margin-top: 14px; padding: 16px; border-radius: var(--raio); background: var(--superficie); border: 1px solid var(--linha); }
+.feedback--ok { background: var(--acerto-fundo); border-color: var(--acerto); color: var(--acerto); font-weight: 600; }
+.feedback--erro { border-color: var(--erro); }
+.feedback p { margin: 0 0 10px; }
+.feedback__titulo { font-weight: 700; color: var(--erro); }
+.feedback__correspondencia { font-size: 1.3rem; font-weight: 800; letter-spacing: -.01em; }
+
+.botao { min-height: 50px; padding: 0 18px; background: var(--superficie-2); border: 1px solid var(--linha); border-radius: 14px; font-weight: 600; }
+.botao--principal { background: var(--texto); color: var(--fundo); border-color: var(--texto); }
+.botao--perigo { color: var(--erro); border-color: var(--erro); background: transparent; margin-top: 20px; }
+.botao--largo { width: 100%; margin-top: 28px; }
+.acoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.acoes .botao--principal { flex: 1; }
+.saiba-mais { margin: 12px 0 0; padding: 12px; background: var(--superficie-2); border-radius: 12px; color: var(--texto-suave); font-size: .92rem; }
+
+/* ===== Teclado de piano (uma oitava) ===== */
+.piano { position: relative; display: flex; height: var(--altura-piano); margin: 12px 0 8px; }
+.tecla { display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px; font-size: .75rem; font-weight: 800; text-align: center; }
+.tecla--branca { flex: 1; background: #eef1f5; border: 1px solid #0b0d11; color: #0b0d11; border-radius: 0 0 6px 6px; }
+.tecla--preta { position: absolute; top: 0; height: 60%; width: calc(var(--larg-preta) * 1%); background: #0b0d11; color: var(--texto); z-index: 2; border-radius: 0 0 5px 5px; border: 1px solid #3a4452; }
+.tecla--sax { background: var(--sax); color: #1a1305; }
+.tecla--piano { background: var(--piano); color: #07142b; }
+.legenda { display: flex; gap: 16px; flex-wrap: wrap; font-size: .85rem; color: var(--texto-suave); }
+.legenda i { display: inline-block; width: 12px; height: 12px; border-radius: 4px; margin-right: 6px; vertical-align: -1px; }
+
+/* ===== Tabelas ===== */
+.rolagem-tabela { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; background: var(--superficie); border: 1px solid var(--linha); border-radius: var(--raio); overflow: hidden; }
+th, td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--linha); }
+tr:last-child td { border-bottom: 0; }
+th { background: var(--superficie-2); font-size: .85rem; color: var(--texto-suave); font-weight: 600; }
+.col-sax { color: var(--sax); font-weight: 700; }
+.col-piano { color: var(--piano); font-weight: 700; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+#historico-conteudo h4 { margin: 22px 0 8px; font-size: .95rem; color: var(--texto-suave); font-weight: 600; }
+
+/* ===== Ajustes: cartões de opção ===== */
+.opcoes { display: grid; gap: 10px; }
+.opcao { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 68px; padding: 14px 16px 14px 48px; position: relative; text-align: left; background: var(--superficie); border: 1.5px solid var(--linha); border-radius: var(--raio); }
+.opcao::before { content: ""; position: absolute; left: 16px; top: 20px; width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--texto-suave); }
+.opcao[aria-pressed="true"] { border-color: var(--texto); background: var(--superficie-2); }
+.opcao[aria-pressed="true"]::before { border-color: var(--acerto); background: radial-gradient(var(--acerto) 45%, transparent 50%); }
+.opcao__titulo { font-weight: 700; font-size: 1.05rem; }
+.opcao__desc { color: var(--texto-suave); font-size: .9rem; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } button:active { transform: none !important; } }
+@media (min-width: 600px) { .app { padding-top: 32px; } .pergunta__nota { font-size: 4.2rem; } }
